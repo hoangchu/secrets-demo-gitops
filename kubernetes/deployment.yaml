@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: secrets-demo-container
-          image: ghcr.io/hoangchu/secrets-demo:latest
+          image: ghcr.io/hoangchu/secrets-demo:bcaa5f0956c4cef77c7cbd5000f1e87f0796fce9
           imagePullPolicy: Always
           env:
             - name: ASPNETCORE_ENVIRONMENT
@@ -57,5 +57,3 @@ spec:
               port: 8080
       imagePullSecrets:
         - name: ghcr-pull-secret
-
-
