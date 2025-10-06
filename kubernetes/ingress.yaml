@@ -1,0 +1,24 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: secrets-demo-ingress
+  labels:
+    group: moz-poc
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: secrets-demo.logius-moz-poc.test3.s15m.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: secrets-demo-service
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - secrets-demo.logius-moz-poc.test3.s15m.nl
+      secretName: wildcard-tls

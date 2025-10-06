@@ -1,0 +1,18 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: access-to-connectionpool # Allow pods with label "from-vertrouwd-to-zeer-vertrouwd" to access the database connection pool
+  labels:
+    group: sp-demo
+spec:
+  ingress:
+    - from: # From which pods
+        - podSelector:
+            matchLabels:
+              access-to-connectionpool: allow
+  podSelector: # To which pods
+    matchLabels:
+      app: pooler
+  policyTypes:
+    - Ingress

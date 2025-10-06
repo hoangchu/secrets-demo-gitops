@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secrets-demo-deployment
+  labels:
+    group: moz-poc
+spec:
+  selector:
+    matchLabels:
+      app: secrets-demo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: secrets-demo
+        group: moz-poc
+        tier: vertrouwd
+        ingress-controller-frontoffice-policy: allow
+        egress-frontoffice-policy: allow
+        access-to-connectionpool: allow
+    spec:
+      containers:
+        - name: secrets-demo-container
+          image: ghcr.io/hoangchu/secrets-demo:latest
+          imagePullPolicy: Always
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Test
+            - name: ASPNETCORE_URLS
+              value: http://+:8080
+            - name: Secrets__SymmetricKey
+              valueFrom:
+                secretKeyRef:
+                  name: secrets-demo-secrets
+                  key: Secrets__SymmetricKey
+          ports:
+            - containerPort: 8080
+              name: web
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 500m
+              memory: 500Mi
+            limits:
+              cpu: 550m
+              memory: 550Mi
+          livenessProbe:
+            initialDelaySeconds: 3
+            timeoutSeconds: 3
+            tcpSocket:
+              port: 8080
+          readinessProbe:
+            initialDelaySeconds: 3
+            timeoutSeconds: 3
+            tcpSocket:
+              port: 8080
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+
+
