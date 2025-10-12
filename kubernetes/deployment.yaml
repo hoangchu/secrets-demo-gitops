@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: secrets-demo-container
-          image: ghcr.io/hoangchu/secrets-demo:8ded857108ecba663b9e16c290bc98feadf970e8
+          image: ""
           imagePullPolicy: Always
           env:
             - name: ASPNETCORE_ENVIRONMENT
